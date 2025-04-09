@@ -13,32 +13,33 @@ def media(marcados, recebidos):
     
 
 qtdTimes = int(input())
-times = []
 instancia = 1
-for i in range(qtdTimes):
-    c = Time(i+1,0,0,0)
-    times.append(c)
 
-while input() != 0:
-    for i in range(int(qtdTimes*((qtdTimes-1)/2))):
-        x, y, z, w = (int(x) for x in input().split())
-        times[x].marcados += y
-        times[x].recebidos += w
-        times[z].marcados += w
-        times[z].recebidos += y
+while qtdTimes != 0:
+    times = []
+    for i in range(0, qtdTimes):
+        c = Time(i+1,0,0,0)
+        times.append(c)
+
+    for i in range(int(qtdTimes * ((qtdTimes - 1) / 2))):
+        x, y, z, w = [int(x) for x in input().split()]
+        times[x-1].marcados += y
+        times[x-1].recebidos += w
+        times[z-1].marcados += w
+        times[z-1].recebidos += y
         if y > w:
-            times[x].pontuacao += 2
-            times[z].pontuacao += 1
+            times[x-1].pontuacao += 2
+            times[z-1].pontuacao += 1
         else:
-            times[z].pontuacao += 2
-            times[x].pontuacao += 1
-resultado = sorted(times, key=lambda x: (-x.pontuacao, -media(x.marcados, x.recebidos), x.marcados, x.num ))
+            times[z-1].pontuacao += 2
+            times[x-1].pontuacao += 1
+    resultado = sorted(times, key=lambda x: (-x.pontuacao, -media(x.marcados, x.recebidos), x.marcados, x.num ))
 
-print(f"Instancia {instancia}\n")
-instancia += 1
-for i in range(qtdTimes):
-    if i != qtdTimes:
-        print(f"{resultado[i].num} ")
-    else:
-        print(f"{resultado[i]}")
+    print(f"Instancia {instancia}")
+    print(" ".join(str(t.num) for t in resultado))
+    instancia += 1
 
+    qtdPreview = int(input())
+    if qtdPreview != 0:
+        print()
+    qtdTimes = qtdPreview
